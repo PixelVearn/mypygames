@@ -44,20 +44,20 @@ python main.py
 
 ## Project Structure
 
-- `main.py`  Entry point
-- `game_panel.py`  Main game loop and logic
-- `player.py`  Player movement, attack, animations
-- `monster.py`  Base monster class with A* pathfinding
-- `world_map.py`  Map rendering and collisions
-- `map_loader.py`  Load map files from `maps/`
-- `asset_setter.py`  Entity placement per map
-- `event_handler.py`  Map transitions (house, cave, stairs)
-- `pathfinding.py`  A* algorithm
-- `tileset.py`  Terrain tiles
-- `object_registry.py`  Objects (doors, chests, items)
-- `camera.py`  Camera follow
-- `sound_manager.py`  Music and sound effects
-- `ui.py`  HUD, inventory, game over, victory screens
+- `main.py` - Entry point
+- `game_panel.py` - Main game loop and logic
+- `player.py` - Player movement, attack, animations
+- `monster.py` - Base monster class with A* pathfinding
+- `world_map.py` - Map rendering and collisions
+- `map_loader.py` - Load map files from `maps/`
+- `asset_setter.py` - Entity placement per map
+- `event_handler.py` - Map transitions (house, cave, stairs)
+- `pathfinding.py` - A* algorithm
+- `tileset.py` - Terrain tiles
+- `object_registry.py` - Objects (doors, chests, items)
+- `camera.py` - Camera follow
+- `sound_manager.py` - Music and sound effects
+- `ui.py` - HUD, inventory, game over, victory screens
 
 ## Generate Code Rapport
 
