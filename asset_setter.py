@@ -37,8 +37,7 @@ def spawn_entities_from_map(
     if map_name == "map.txt":
         spawn_player = (1, 1)
         objects[(5, 3)] = "h"
-        bat_tiles = [(10, 9)]
-        slime_tiles = [(18, 14)]
+        slime_tiles = [(18, 14),(10, 9)]
         orc_tiles = [(28, 10)]
     elif map_name == "house.txt":
         objects[(8, 2)] = "t"
