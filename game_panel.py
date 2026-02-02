@@ -276,11 +276,7 @@ class GamePanel:
                         self.monsters_killed = 0
                         self.total_coins_collected = 0
                         self.inventory.clear()
-                        self.events._in_interior = False
-                        self.events._in_cave = False
-                        self.events._return_raw_rows = None
-                        self.events._return_map_index = None
-                        self.events._return_spawn_tile = None
+                        self.events.reset()  # This now properly clears ALL event handler state
                         self.current_map_index = 0
                         self.raw_rows = load_map_file(self.map_files[self.current_map_index])
                         self.reset_game()

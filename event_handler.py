@@ -21,7 +21,10 @@ class EventHandler:
 
     def __init__(self, gp: GamePanel):
         self.gp = gp
+        self._initialize_state()
 
+    def _initialize_state(self):
+        """Initialize/reset all event handler state."""
         # --- map-location flags ---
         self._in_interior = False
         self._in_cave = False
@@ -39,6 +42,10 @@ class EventHandler:
 
         # --- stair re-trigger guard ---
         self._on_stair = False
+
+    def reset(self):
+        """Reset all event handler state (called when restarting the game)."""
+        self._initialize_state()
 
     # ------------------------------------------------------------------
     # public queries (game_panel reads these)
