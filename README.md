@@ -52,6 +52,7 @@ python main.py
 - `map_loader.py` - Load map files from `maps/`
 - `asset_setter.py` - Entity placement per map
 - `event_handler.py` - Map transitions (house, cave, stairs)
+- `key_handler.py` - Keyboard input handling
 - `pathfinding.py` - A* algorithm
 - `tileset.py` - Terrain tiles
 - `object_registry.py` - Objects (doors, chests, items)

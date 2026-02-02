@@ -7,6 +7,7 @@ import pygame
 from asset_setter import spawn_entities_from_map
 from camera import Camera
 from event_handler import EventHandler
+from key_handler import KeyHandler
 from map_loader import load_map_file
 from object_registry import ObjectRegistry
 from sound_manager import SoundManager
@@ -73,6 +74,9 @@ class GamePanel:
 
         # EventHandler owns all transition state and logic.
         self.events = EventHandler(self)
+        
+        # KeyHandler centralizes all keyboard input logic.
+        self.key_handler = KeyHandler(self)
 
         self.reset_game()
 
@@ -243,44 +247,21 @@ class GamePanel:
         while running:
             dt = self.clock.tick(60) / 1000.0
 
+            # ------------------------------------------------------------------
+            # Event handling - now delegated to KeyHandler
+            # ------------------------------------------------------------------
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
-                elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
-                    running = False
-                elif event.type == pygame.KEYDOWN and event.key == pygame.K_p:
-                    if not self.game_over:
-                        self.paused = not self.paused
-                elif event.type == pygame.KEYDOWN and event.key == pygame.K_e:
-                    if self.inventory_open:
-                        self.inventory_open = False
-                    elif not self.game_over and not self.paused:
-                        self.inventory_open = True
-                elif event.type == pygame.KEYDOWN and event.key == pygame.K_1:
-                    if not self.game_over and not self.paused:
-                        if self.inventory.get("potion", 0) > 0 and self.player.hp > 0:
-                            self.inventory["potion"] -= 1
-                            if self.inventory["potion"] <= 0:
-                                self.inventory.pop("potion", None)
-                            self.player.hp = min(self.player.max_hp, self.player.hp + 2)
-                elif event.type == pygame.KEYDOWN and event.key == pygame.K_x:
-                    if not self.game_over and not self.paused and not self.inventory_open:
-                        self.events.handle_key_event(event.key)
-                elif event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
-                    if not self.game_over and not self.paused and not self.inventory_open:
-                        if self.player.start_attack():
-                            self.sound.play_swing()
-                elif event.type == pygame.KEYDOWN and event.key == pygame.K_r:
-                    if self.game_over:
-                        # Reset to the main map and reset all stats
-                        self.monsters_killed = 0
-                        self.total_coins_collected = 0
-                        self.inventory.clear()
-                        self.events.reset()  # This now properly clears ALL event handler state
-                        self.current_map_index = 0
-                        self.raw_rows = load_map_file(self.map_files[self.current_map_index])
-                        self.reset_game()
+                elif event.type == pygame.KEYDOWN:
+                    # Delegate all keyboard input to the KeyHandler
+                    should_quit = self.key_handler.handle_keydown(event.key)
+                    if should_quit:
+                        running = False
 
+            # ------------------------------------------------------------------
+            # Game update logic
+            # ------------------------------------------------------------------
             if not self.game_over and not self.paused and not self.inventory_open:
                 self.player.update(dt, self.world.colliders_for_rect)
                 self.camera.update(self.player.rect, self.world.pixel_width, self.world.pixel_height)
@@ -350,6 +331,9 @@ class GamePanel:
                 after_count = len(self.monsters)
                 self.monsters_killed += (before_count - after_count)
 
+            # ------------------------------------------------------------------
+            # Rendering
+            # ------------------------------------------------------------------
             self.screen.fill((0, 0, 0))
             self.world.draw(self.screen, self.camera.offset, self.tileset, object_registry=self.object_registry)
 
