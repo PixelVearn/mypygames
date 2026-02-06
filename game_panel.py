@@ -84,6 +84,11 @@ class GamePanel:
     # game state
     # ------------------------------------------------------------------
     def reset_game(self, spawn_tile: tuple[int, int] | None = None):
+        # Save current player HP if player exists
+        saved_hp = None
+        if self.player is not None:
+            saved_hp = self.player.hp
+        
         if self.events.in_cave:
             map_name = "cave.txt"
         elif self.events.in_interior:
@@ -101,6 +106,11 @@ class GamePanel:
         )
         self.world = WorldMap(cleaned_rows, self.tile_size, self.tileset.solid_tiles, inflate_margin=1, objects=objects)
         self.player = p
+        
+        # Restore player HP
+        if saved_hp is not None:
+            self.player.hp = saved_hp
+        
         self.monsters = ms
         self._monster_drop_done = set()
         self.game_over = False
@@ -113,6 +123,30 @@ class GamePanel:
             self.sound.play_cave_music()
         else:
             self.sound.play_music()
+
+    def full_restart_game(self):
+        """Complete restart with full HP - used when pressing R after game over."""
+        # Import here to avoid circular dependency
+        from map_loader import load_map_file
+        
+        # Reset all game statistics
+        self.monsters_killed = 0
+        self.total_coins_collected = 0
+        self.inventory.clear()
+        
+        # Reset event handler state (clears map transition state)
+        self.events.reset()
+        
+        # Return to main map
+        self.current_map_index = 0
+        self.raw_rows = load_map_file(self.map_files[self.current_map_index])
+        
+        # Temporarily set player to None so reset_game won't save HP
+        self.player = None
+        
+        # Reset the game world (will start with full HP since self.player is None)
+        self.reset_game()
+
 
     # ------------------------------------------------------------------
     # helpers (used by EventHandler via self.gp)

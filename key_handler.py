@@ -158,23 +158,8 @@ class KeyHandler:
         if not self.gp.game_over:
             return
         
-        # Import here to avoid circular dependency
-        from map_loader import load_map_file
-        
-        # Reset all game statistics
-        self.gp.monsters_killed = 0
-        self.gp.total_coins_collected = 0
-        self.gp.inventory.clear()
-        
-        # Reset event handler state (clears map transition state)
-        self.gp.events.reset()
-        
-        # Return to main map
-        self.gp.current_map_index = 0
-        self.gp.raw_rows = load_map_file(self.gp.map_files[self.gp.current_map_index])
-        
-        # Reset the game world
-        self.gp.reset_game()
+        # Use the full restart function which resets HP to full
+        self.gp.full_restart_game()
     
     # ------------------------------------------------------------------
     # Inventory control handlers
