@@ -40,13 +40,13 @@ class TileSet:
         water_corner4 = load_image(tiles_dir / "025.png")
         water_center_left = load_image(tiles_dir / "023.png")
         road = load_image(tiles_dir / "003.png")
-        road_corner1 = load_image(tiles_dir / "004.png")
+        road_corner1 = load_image(tiles_dir / "015.png")
         road_center_up = load_image(tiles_dir / "005.png")
-        road_corner2 = load_image(tiles_dir / "006.png")
+        road_corner2 = load_image(tiles_dir / "012.png")
         road_center_right = load_image(tiles_dir / "008.png")
-        road_corner3 = load_image(tiles_dir / "011.png")
+        road_corner3 = load_image(tiles_dir / "013.png")
         road_center_down = load_image(tiles_dir / "010.png")
-        road_corner4 = load_image(tiles_dir / "009.png")
+        road_corner4 = load_image(tiles_dir / "014.png")
         road_center_left = load_image(tiles_dir / "007.png")
         water_external_corner1 = load_image(tiles_dir / "028.png")
         water_external_corner2 = load_image(tiles_dir / "029.png")
@@ -210,7 +210,7 @@ class TileSet:
             "d": self.tile_stairs_down,
         }
 
-        self.solid_tiles = {"#", "~", "V", "T", "1", "2", "3", "4", "5", "6", "7", "8", "9", "I", "J", "K", "L"}
+        self.solid_tiles = {"#", "~", "V", "T", "1", "2", "3", "4", "5", "6", "7", "8", "I", "J", "K", "L"}
 
     def image_for(self, symbol: str):
         return self.images.get(symbol, self.tile_grass)
